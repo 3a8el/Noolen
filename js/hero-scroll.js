@@ -28,6 +28,18 @@ const wireHeroScroll = () => {
 
     let seekFrame = null;
     let targetTime = 0;
+    const seekToTarget = () => {
+      if (seekFrame !== null || heroVideo.seeking) return;
+
+      seekFrame = requestAnimationFrame(() => {
+        seekFrame = null;
+        if (!heroVideo.seeking && Math.abs(heroVideo.currentTime - targetTime) > 0.05) {
+          heroVideo.currentTime = targetTime;
+        }
+      });
+    };
+
+    heroVideo.addEventListener('seeked', seekToTarget);
 
     ScrollTrigger.create({
       trigger: scrollFilm,
@@ -36,14 +48,7 @@ const wireHeroScroll = () => {
       scrub: true,
       onUpdate: (self) => {
         targetTime = self.progress * heroVideo.duration;
-        if (seekFrame !== null) return;
-
-        seekFrame = requestAnimationFrame(() => {
-          seekFrame = null;
-          if (Math.abs(heroVideo.currentTime - targetTime) > 0.05) {
-            heroVideo.currentTime = targetTime;
-          }
-        });
+        seekToTarget();
       }
     });
 
