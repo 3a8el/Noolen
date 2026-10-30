@@ -12,101 +12,56 @@ if (preloader) {
   });
 }
 
-const setupFallbackVideo = () => {
-  document.body.classList.add('video-fallback');
-};
+const wireHeroScroll = () => {
+  if (!heroVideo || !scrollFilm || !copyOne || !copyTwo || !window.gsap || !window.ScrollTrigger) return;
 
-const loadHeroVideo = () => {
-  if (!heroVideo) return;
-
-  const videoPath = 'assets/video/Noolen-hero.mp4';
   const source = document.createElement('source');
-  source.src = videoPath;
+  source.src = 'assets/video/Noolen-hero.mp4';
   source.type = 'video/mp4';
   heroVideo.appendChild(source);
-  heroVideo.addEventListener('error', setupFallbackVideo, { once: true });
 
-  if (!window.gsap || !window.ScrollTrigger || !scrollFilm) return;
-
-  const initScrollVideo = () => {
-    const duration = heroVideo.duration || 10;
-
+  heroVideo.addEventListener('loadedmetadata', () => {
     gsap.registerPlugin(ScrollTrigger);
 
-    gsap.to(copyOne, {
-      opacity: 1,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: scrollFilm,
-        start: 'top top',
-        end: '+=35%',
-        scrub: true,
-      },
+    gsap.set(copyOne, { opacity: 0 });
+    gsap.set(copyTwo, { opacity: 0 });
+
+    ScrollTrigger.create({
+      trigger: scrollFilm,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: true,
+      onUpdate: (self) => {
+        const t = self.progress * heroVideo.duration;
+        if (Math.abs(heroVideo.currentTime - t) > 0.05) {
+          heroVideo.currentTime = t;
+        }
+      }
     });
 
-    gsap.to(copyOne, {
-      opacity: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: scrollFilm,
-        start: '+=25% center',
-        end: '+=20% center',
-        scrub: true,
-      },
-    });
-
-    gsap.to(copyTwo, {
-      opacity: 1,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: scrollFilm,
-        start: '+=45% center',
-        end: '+=20% center',
-        scrub: true,
-      },
-    });
-
-    gsap.to(copyTwo, {
-      opacity: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: scrollFilm,
-        start: '+=65% center',
-        end: '+=18% center',
-        scrub: true,
-      },
-    });
-
-    gsap.to(heroVideo, {
-      currentTime: duration,
-      ease: 'none',
+    gsap.timeline({
       scrollTrigger: {
         trigger: scrollFilm,
         start: 'top top',
         end: 'bottom bottom',
         scrub: true,
-      },
-    });
-  };
-
-  if (heroVideo.readyState >= 1) {
-    initScrollVideo();
-  } else {
-    heroVideo.addEventListener('loadedmetadata', initScrollVideo, { once: true });
-  }
+      }
+    })
+      .to(copyOne, { opacity: 1, duration: 0.1 }, 0.15)
+      .to(copyOne, { opacity: 0, duration: 0.1 }, 0.45)
+      .to(copyTwo, { opacity: 1, duration: 0.1 }, 0.58)
+      .to(copyTwo, { opacity: 0, duration: 0.1 }, 0.88);
+  }, { once: true });
 };
 
-if (window.gsap && window.ScrollTrigger && scrollFilm && copyOne && copyTwo) {
-  const fallbackCopy = () => {
-    gsap.set(copyOne, { opacity: 1 });
-    gsap.set(copyTwo, { opacity: 0.8 });
-  };
+if (heroVideo) {
+  heroVideo.muted = true;
+  heroVideo.playsInline = true;
+  heroVideo.preload = 'auto';
+}
 
-  loadHeroVideo();
-
-  if (!heroVideo || !heroVideo.querySelector('source')) {
-    fallbackCopy();
-  }
+if (document.readyState === 'complete') {
+  wireHeroScroll();
 } else {
-  loadHeroVideo();
+  window.addEventListener('load', wireHeroScroll, { once: true });
 }
