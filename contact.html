@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | Noolen</title>
+    <meta name="description" content="Get in touch with Noolen for direct inquiries, team discussions, and uniform requests." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/nav.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <style>
+      body { background: var(--cream); }
+      .contact-layout { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 2rem; margin-top: 2rem; }
+      .panel { background: rgba(255,255,255,0.4); border: 1px solid rgba(49,26,20,0.08); border-radius: 24px; padding: 2rem; }
+      .dark-panel { background: var(--black); color: var(--white); border-radius: 24px; }
+      .contact-list { display: grid; gap: 1rem; margin-top: 1.5rem; }
+      .contact-item { padding: 1rem 0; border-bottom: 1px solid rgba(49,26,20,0.08); }
+      form { display: grid; gap: 1rem; }
+      label { display: grid; gap: 0.45rem; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,0.72); }
+      input, textarea { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14); border-radius: 14px; padding: 0.92rem 1rem; color: var(--white); }
+      input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.38); }
+      textarea { min-height: 150px; resize: vertical; }
+      @media (max-width: 900px) { .contact-layout { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a href="index.html" class="brand" aria-label="Noolen home">
+          <img src="assets/logo/noolen-wordmark-dark.svg" alt="Noolen" />
+        </a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="collections.html">Collections</a>
+          <a href="about.html">About</a>
+          <a href="custom.html">Custom Order</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-shell container">
+      <section class="page-hero">
+        <p class="eyebrow">Contact</p>
+        <h1>Get in touch.</h1>
+      </section>
+
+      <section class="contact-layout">
+        <aside class="panel">
+          <p class="eyebrow">Reach us</p>
+          <div class="contact-list">
+            <div class="contact-item">
+              <strong>WhatsApp / Phone</strong>
+              <p>+966 00 000 0000</p>
+            </div>
+            <div class="contact-item">
+              <strong>Email</strong>
+              <p>hello@noolen.com</p>
+            </div>
+            <div class="contact-item">
+              <strong>Location</strong>
+              <p>Saudi Arabia</p>
+            </div>
+          </div>
+        </aside>
+
+        <div class="dark-panel panel">
+          <form action="mailto:hello@noolen.com" method="post" enctype="text/plain">
+            <label>
+              Name
+              <input type="text" name="name" placeholder="Your name" />
+            </label>
+            <label>
+              Email
+              <input type="email" name="email" placeholder="you@example.com" />
+            </label>
+            <label>
+              Message
+              <textarea name="message" placeholder="Tell us about your inquiry."></textarea>
+            </label>
+            <button type="submit" class="button button-light" style="justify-self:start;">Send message</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-shell">
+        <div class="footer-brand"><img src="assets/logo/noolen-wordmark-cream.svg" alt="Noolen" /></div>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="collections.html">Collections</a>
+          <a href="about.html">About</a>
+          <a href="custom.html">Custom Order</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <p>© 2026 Noolen</p>
+      </div>
+    </footer>
+
+    <script src="js/nav.js"></script>
+  </body>
+</html>

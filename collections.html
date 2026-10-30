@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Collections | Noolen</title>
+    <meta name="description" content="Browse Noolen's curated uniform collections for schools, corporate teams, and industrial workwear." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/nav.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <style>
+      body { background: var(--cream); }
+      .page-shell { padding-bottom: 5rem; }
+      .filter-row { display: flex; flex-wrap: wrap; gap: 0.9rem; margin: 2rem 0 2.6rem; }
+      .pill { padding: 0.75rem 1.2rem; border-radius: 999px; border: 1px solid rgba(49,26,20,0.15); background: transparent; color: var(--brown); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+      .product-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+      .collection-card { background: rgba(255,255,255,0.4); border: 1px solid rgba(49,26,20,0.08); border-radius: 22px; overflow: hidden; }
+      .collection-visual { height: 340px; background: linear-gradient(135deg, #1d1412, #5c2a23 40%, #c78468); }
+      .collection-card:nth-child(2) .collection-visual { background: linear-gradient(135deg, #f7f0df, #d7c9a8 35%, #d4b8a3); }
+      .collection-card:nth-child(3) .collection-visual { background: linear-gradient(135deg, #211412, #7a2c20 40%, #913f32); }
+      .collection-card:nth-child(4) .collection-visual { background: linear-gradient(135deg, #f3eee3, #d7d4c4 35%, #9b7a69); }
+      .collection-card:nth-child(5) .collection-visual { background: linear-gradient(135deg, #171312, #10100e 35%, #3d2528); }
+      .collection-card:nth-child(6) .collection-visual { background: linear-gradient(135deg, #421b1d, #590a0a 40%, #9b4040); }
+      .collection-info { padding: 1.2rem; }
+      .collection-info h3 { font-size: clamp(2.2rem, 3vw, 3rem); line-height: 0.9; margin-bottom: 0.4rem; }
+      .meta { color: rgba(49,26,20,0.7); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+      .cta-banner { margin-top: 4rem; background: var(--burgundy); color: var(--cream); border-radius: 22px; padding: 3rem 2rem; }
+      .cta-banner h3 { font-size: clamp(2.4rem, 4vw, 4rem); line-height: 0.95; }
+      @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      @media (max-width: 640px) { .product-grid { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a href="index.html" class="brand" aria-label="Noolen home">
+          <img src="assets/logo/noolen-wordmark-dark.svg" alt="Noolen" />
+        </a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="collections.html">Collections</a>
+          <a href="about.html">About</a>
+          <a href="custom.html">Custom Order</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-shell container">
+      <section class="page-hero">
+        <p class="eyebrow">Curated uniforms</p>
+        <h1>The collection.</h1>
+        <p class="page-subtitle">Thoughtful garments for schools, workplaces, and industrial teams—built to look polished, feel comfortable, and represent your identity.</p>
+      </section>
+
+      <div class="filter-row" aria-label="Collection filters">
+        <button class="pill">All</button>
+        <button class="pill">Schools</button>
+        <button class="pill">Corporate</button>
+        <button class="pill">Industrial</button>
+      </div>
+
+      <section class="product-grid">
+        <article class="collection-card">
+          <div class="collection-visual"></div>
+          <div class="collection-info">
+            <div class="meta">School</div>
+            <h3>School Uniform</h3>
+          </div>
+        </article>
+        <article class="collection-card">
+          <div class="collection-visual"></div>
+          <div class="collection-info">
+            <div class="meta">School</div>
+            <h3>Polo Shirt</h3>
+          </div>
+        </article>
+        <article class="collection-card">
+          <div class="collection-visual"></div>
+          <div class="collection-info">
+            <div class="meta">Corporate</div>
+            <h3>Dress Shirt</h3>
+          </div>
+        </article>
+        <article class="collection-card">
+          <div class="collection-visual"></div>
+          <div class="collection-info">
+            <div class="meta">Corporate</div>
+            <h3>Blazer</h3>
+          </div>
+        </article>
+        <article class="collection-card">
+          <div class="collection-visual"></div>
+          <div class="collection-info">
+            <div class="meta">Industrial</div>
+            <h3>Coverall</h3>
+          </div>
+        </article>
+        <article class="collection-card">
+          <div class="collection-visual"></div>
+          <div class="collection-info">
+            <div class="meta">Custom</div>
+            <h3>Tailored System</h3>
+          </div>
+        </article>
+      </section>
+
+      <section class="cta-banner">
+        <p class="eyebrow eyebrow-light">Ready to outfit your team?</p>
+        <h3>Ready to outfit your team?</h3>
+        <a href="custom.html" class="button button-light" style="margin-top:1.4rem;">Start your order</a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-shell">
+        <div class="footer-brand"><img src="assets/logo/noolen-wordmark-cream.svg" alt="Noolen" /></div>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="collections.html">Collections</a>
+          <a href="about.html">About</a>
+          <a href="custom.html">Custom Order</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <p>© 2026 Noolen</p>
+      </div>
+    </footer>
+
+    <script src="js/nav.js"></script>
+  </body>
+</html>

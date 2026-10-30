@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About | Noolen</title>
+    <meta name="description" content="Learn the story behind Noolen and how the brand creates tailored uniforms from concept to delivery." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/nav.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <style>
+      body { background: var(--cream); }
+      .story-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; margin: 2rem 0 4rem; }
+      .story-panel { background: rgba(255,255,255,0.45); border: 1px solid rgba(49,26,20,0.08); border-radius: 24px; padding: 2rem; }
+      .dark-panel { background: var(--black); color: var(--white); padding: 2.1rem; border-radius: 24px; }
+      .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 2rem; }
+      .step { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 1.4rem; }
+      .step-index { font-size: 2.6rem; font-family: var(--font-display); line-height: 1; margin-bottom: 1rem; display: inline-block; }
+      .pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.3rem; margin-top: 2rem; }
+      .pillar { background: rgba(255,255,255,0.45); border: 1px solid rgba(49,26,20,0.08); border-radius: 22px; padding: 1.5rem; }
+      .pillar h3 { font-size: 2.2rem; margin-bottom: 0.6rem; }
+      @media (max-width: 900px) { .story-grid, .steps, .pillars { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a href="index.html" class="brand" aria-label="Noolen home">
+          <img src="assets/logo/noolen-wordmark-dark.svg" alt="Noolen" />
+        </a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="collections.html">Collections</a>
+          <a href="about.html">About</a>
+          <a href="custom.html">Custom Order</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-shell container">
+      <section class="page-hero">
+        <p class="eyebrow">Brand story</p>
+        <h1>From one thread.</h1>
+      </section>
+
+      <section class="story-grid">
+        <article class="story-panel">
+          <p class="eyebrow">Origin</p>
+          <p style="margin-top:1rem;">Noolen is derived from the Tamil word “Nool,” meaning thread or yarn — the beginning of any textile craft. The name reflects the idea that identity begins with a single thread and grows into something crafted, meaningful, and enduring.</p>
+          <p style="margin-top:1rem;">Our approach is rooted in Saudi manufacturing and built around design-led execution. We do not treat uniforms as commodity items. We shape them to represent the people, teams, and institutions they serve.</p>
+        </article>
+
+        <aside class="story-panel">
+          <p class="eyebrow">Vision</p>
+          <p style="margin-top:1rem;">The brand exists to give schools, companies, and industrial teams a more expressive and coherent identity through their uniforms.</p>
+        </aside>
+      </section>
+
+      <section class="dark-panel">
+        <p class="eyebrow eyebrow-light">How it works</p>
+        <div class="steps">
+          <div class="step">
+            <span class="step-index">01</span>
+            <h3>Submit brief</h3>
+          </div>
+          <div class="step">
+            <span class="step-index">02</span>
+            <h3>Design review</h3>
+          </div>
+          <div class="step">
+            <span class="step-index">03</span>
+            <h3>Production</h3>
+          </div>
+          <div class="step">
+            <span class="step-index">04</span>
+            <h3>Delivery</h3>
+          </div>
+        </div>
+      </section>
+
+      <section style="margin-top:4rem;">
+        <p class="eyebrow">Why Noolen</p>
+        <div class="pillars">
+          <article class="pillar">
+            <h3>Design-led</h3>
+            <p>We build around identity rather than mass-market uniform templates.</p>
+          </article>
+          <article class="pillar">
+            <h3>End-to-end</h3>
+            <p>From concept review to production and delivery, we manage the process closely.</p>
+          </article>
+          <article class="pillar">
+            <h3>Saudi-based</h3>
+            <p>Made with local understanding, commercial clarity, and manufacturing experience.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="cta-banner" style="margin-top:4rem; background: var(--burgundy);">
+        <p class="eyebrow eyebrow-light">Start your order</p>
+        <h3>Start your order.</h3>
+        <a href="custom.html" class="button button-light" style="margin-top:1.3rem;">Tell us about your team</a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-shell">
+        <div class="footer-brand"><img src="assets/logo/noolen-wordmark-cream.svg" alt="Noolen" /></div>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="collections.html">Collections</a>
+          <a href="about.html">About</a>
+          <a href="custom.html">Custom Order</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <p>© 2026 Noolen</p>
+      </div>
+    </footer>
+
+    <script src="js/nav.js"></script>
+  </body>
+</html>

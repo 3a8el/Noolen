@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom Order | Noolen</title>
+    <meta name="description" content="Request a bespoke uniform solution from Noolen for schools, corporate teams, or industrial operations." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/nav.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <style>
+      body { background: var(--cream); }
+      .custom-layout { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 2rem; margin-top: 2rem; }
+      .panel { background: rgba(255,255,255,0.38); border: 1px solid rgba(49,26,20,0.08); border-radius: 24px; padding: 2rem; }
+      .dark-panel { background: var(--black); color: var(--white); border-radius: 24px; }
+      .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; }
+      form { display: grid; gap: 1rem; }
+      label { display: grid; gap: 0.45rem; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,0.72); }
+      input, select, textarea { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14); border-radius: 14px; padding: 0.92rem 1rem; color: var(--white); }
+      input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.38); }
+      textarea { min-height: 150px; resize: vertical; }
+      .step-list { display: grid; gap: 1rem; margin-top: 2rem; }
+      .step-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(49,26,20,0.08); border-radius: 18px; padding: 1rem 1.2rem; }
+      .step-box strong { display: block; margin-bottom: 0.35rem; }
+      @media (max-width: 900px) { .custom-layout, .form-grid { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a href="index.html" class="brand" aria-label="Noolen home">
+          <img src="assets/logo/noolen-wordmark-dark.svg" alt="Noolen" />
+        </a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="collections.html">Collections</a>
+          <a href="about.html">About</a>
+          <a href="custom.html">Custom Order</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-shell container">
+      <section class="page-hero">
+        <p class="eyebrow">Custom order</p>
+        <h1>Let’s build your identity.</h1>
+        <p class="page-subtitle">Whether you need uniforms for a school, corporate office, or industrial operation, we’ll help define the right style, fit, and finish for your team.</p>
+      </section>
+
+      <section class="custom-layout">
+        <aside class="panel">
+          <p class="eyebrow">Our process</p>
+          <div class="step-list">
+            <div class="step-box">
+              <strong>1. Fill the form</strong>
+              Share your needs and context.
+            </div>
+            <div class="step-box">
+              <strong>2. Receive a quote</strong>
+              We respond within 48 hours.
+            </div>
+            <div class="step-box">
+              <strong>3. Approve and produce</strong>
+              We move into production once approved.
+            </div>
+          </div>
+        </aside>
+
+        <div class="dark-panel panel">
+          <form action="mailto:hello@noolen.com" method="post" enctype="text/plain">
+            <div class="form-grid">
+              <label>
+                Name
+                <input type="text" name="name" placeholder="Your name" />
+              </label>
+              <label>
+                Organization
+                <input type="text" name="organization" placeholder="School / company" />
+              </label>
+            </div>
+
+            <div class="form-grid">
+              <label>
+                Category
+                <select name="category">
+                  <option>Schools</option>
+                  <option>Corporate</option>
+                  <option>Industrial</option>
+                </select>
+              </label>
+              <label>
+                Estimated quantity
+                <input type="text" name="quantity" placeholder="e.g. 250 uniforms" />
+              </label>
+            </div>
+
+            <label>
+              Message
+              <textarea name="message" placeholder="Tell us about your team, needs, timeline, and any references."></textarea>
+            </label>
+
+            <button type="submit" class="button button-light" style="justify-self:start;">Submit inquiry</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-shell">
+        <div class="footer-brand"><img src="assets/logo/noolen-wordmark-cream.svg" alt="Noolen" /></div>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="collections.html">Collections</a>
+          <a href="about.html">About</a>
+          <a href="custom.html">Custom Order</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <p>© 2026 Noolen</p>
+      </div>
+    </footer>
+
+    <script src="js/nav.js"></script>
+  </body>
+</html>
