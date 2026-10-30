@@ -157,7 +157,7 @@ p {
 }
 
 .section-heading h2,
-.about-copy h2,
+.about-feature-copy h2,
 .page-hero h1,
 .cta-copy h2 {
   font-size: clamp(2.7rem, 5vw, 5rem);
@@ -198,7 +198,7 @@ p {
   }
 
   .section-heading h2,
-  .about-copy h2,
+  .about-feature-copy h2,
   .page-hero h1,
   .cta-copy h2 {
     line-height: 0.96;

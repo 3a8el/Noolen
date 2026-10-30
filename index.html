@@ -103,13 +103,28 @@
         </div>
       </section>
 
-      <section class="about-teaser" id="about">
-        <div class="container about-grid">
-          <div class="about-copy">
+      <section class="about-feature" id="about">
+        <div class="about-feature-media" aria-hidden="true"></div>
+
+        <!-- Leaf strips stepping from the panel into the photo; --w is width, --o is opacity -->
+        <div class="about-feature-strips" aria-hidden="true">
+          <span style="--w: 13%; --o: 0.94"></span>
+          <span class="is-dark" style="--w: 5%; --o: 0.85"></span>
+          <span style="--w: 10%; --o: 0.78"></span>
+          <span class="is-gap" style="--w: 4%"></span>
+          <span style="--w: 15%; --o: 0.6"></span>
+          <span class="is-dark" style="--w: 7%; --o: 0.55"></span>
+          <span style="--w: 6%; --o: 0.42"></span>
+          <span class="is-gap" style="--w: 6%"></span>
+          <span style="--w: 12%; --o: 0.3"></span>
+          <span class="is-dark" style="--w: 4%; --o: 0.28"></span>
+          <span style="--w: 8%; --o: 0.16"></span>
+        </div>
+
+        <div class="about-feature-panel">
+          <div class="about-feature-copy">
             <p class="eyebrow eyebrow-light">About Noolen</p>
             <h2>From one thread, every identity.</h2>
-          </div>
-          <div class="about-text">
             <p>
               We build uniforms that feel considered from the first stitch to the final delivery. Every garment is
               shaped to represent the people inside it — with clarity, confidence, and a premium finish.
@@ -154,5 +169,6 @@
     <script src="js/smooth-scroll.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/hero-scroll.js"></script>
+    <script src="js/about-strips.js"></script>
   </body>
 </html>
