@@ -1,6 +1,7 @@
+/* Pinned while the film plays and the five product slides pass; the height sets the pace. */
 .scroll-film {
   position: relative;
-  height: 250vh;
+  height: 620vh;
   background: var(--cream);
 }
 
@@ -12,10 +13,16 @@
   overflow: hidden;
 }
 
-.film-frame {
-  position: relative;
+.film-track {
+  display: flex;
   height: 100%;
-  width: 100%;
+  will-change: transform;
+}
+
+.film-slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
   background: var(--cream);
   overflow: hidden;
 }
@@ -26,17 +33,6 @@
   display: block;
   width: 100%;
   height: 100%;
-}
-
-.product-preview {
-  background: var(--black);
-  color: var(--white);
-  padding: 6rem 0 5.1rem;
-}
-
-.product-preview .section-heading h2 {
-  color: var(--white);
-  max-width: 700px;
 }
 
 .about-feature-shell {
@@ -203,10 +199,6 @@
 
 @media (max-width: 720px) {
   .scroll-film {
-    height: 210vh;
-  }
-
-  .product-preview {
-    padding-top: 5rem;
+    height: 520vh;
   }
 }

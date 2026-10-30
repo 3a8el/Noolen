@@ -5,6 +5,8 @@ if (window.Lenis && !prefersReducedMotion) {
     lerp: 0.09,
     wheelMultiplier: 1
   });
+  // Shared so other scripts can scroll through Lenis instead of fighting it.
+  window.lenis = lenis;
 
   // Drive Lenis from GSAP's ticker so ScrollTrigger reads the same scroll position every frame.
   if (window.gsap && window.ScrollTrigger) {

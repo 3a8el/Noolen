@@ -1,103 +1,62 @@
-.product-track {
-  display: flex;
-  gap: 1.5rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 0.5rem;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
-}
-
-.product-track::-webkit-scrollbar {
-  height: 8px;
-}
-
-.product-track::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 999px;
-}
-
-.product-card {
-  position: relative;
-  flex: 0 0 min(360px, 78vw);
-  scroll-snap-align: start;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  overflow: hidden;
-}
-
-.product-image {
-  position: relative;
-  height: 500px;
-  background: linear-gradient(135deg, #4d1f1a 0%, #8f4436 100%);
-  overflow: hidden;
-}
-
-.product-image::before,
-.product-image::after {
-  content: "";
+/* Product slides continue the film's last frame: same cream, and each garment drawn at the
+   polo's size in that frame (60.3% of its height, centred 1.25% above the middle).
+   --end-frame-height is set by js/hero-scroll.js from the final frame's on-screen size. */
+.product-shot {
   position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
+  left: 50%;
+  top: 50%;
+  height: calc(var(--end-frame-height, 100vh) * 0.603);
+  width: auto;
+  max-width: 86%;
+  object-fit: contain;
+  transform: translate(-50%, calc(-50% - var(--end-frame-height, 100vh) * 0.0125));
 }
 
-.product-image::before {
-  width: 240px;
-  height: 240px;
-  right: -35px;
-  top: 42px;
+.slide-caption {
+  position: absolute;
+  left: clamp(24px, 7vw, 120px);
+  top: 50%;
+  max-width: 24vw;
+  color: var(--brown);
+  transform: translateY(-50%);
 }
 
-.product-image::after {
-  width: 180px;
-  height: 180px;
-  left: -20px;
-  bottom: 24px;
-}
-
-.product-one {
-  background: linear-gradient(135deg, #291713 0%, #4f281f 40%, #8b4337 100%);
-}
-
-.product-two {
-  background: linear-gradient(135deg, #f0ecdf 0%, #d9d0bc 40%, #ece5d5 100%);
-}
-
-.product-three {
-  background: linear-gradient(135deg, #3f1716 0%, #6f291d 35%, #a34a3a 100%);
-}
-
-.product-four {
-  background: linear-gradient(135deg, #f7f1e5 0%, #ddd1b9 34%, #8d5a46 100%);
-}
-
-.product-five {
-  background: linear-gradient(135deg, #1b1a1b 0%, #0f0c0a 38%, #53231d 100%);
-}
-
-.product-copy {
-  padding: 1.2rem 1.2rem 1.7rem;
-}
-
-.product-tag {
-  display: inline-block;
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 0.55rem;
-}
-
-.product-copy h3 {
+.slide-index {
+  margin-bottom: 1.6rem;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 3vw, 2.8rem);
-  line-height: 0.95;
-  color: var(--white);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.slide-index span {
+  opacity: 0.45;
+}
+
+.slide-caption .eyebrow {
+  color: rgba(49, 26, 20, 0.72);
+}
+
+.slide-caption h3 {
+  margin-top: 0.9rem;
+  font-size: clamp(2.6rem, 5vw, 5rem);
+  line-height: 0.92;
 }
 
 @media (max-width: 720px) {
-  .product-image {
-    height: 400px;
+  .slide-caption {
+    top: auto;
+    bottom: max(28px, 6vh);
+    left: 24px;
+    max-width: none;
+    transform: none;
+  }
+
+  .slide-index {
+    margin-bottom: 0.9rem;
+  }
+
+  .slide-caption h3 {
+    font-size: 2.6rem;
   }
 }

@@ -44,58 +44,47 @@
     </header>
 
     <main>
-      <section class="scroll-film" id="top">
+      <!-- The film ends on the polo, which becomes the first of five product slides -->
+      <section class="scroll-film" id="top" aria-label="Noolen products">
         <div class="scroll-film-inner">
-          <div class="film-frame">
-            <canvas id="heroCanvas" role="img" aria-label="Close-up of Noolen fabric"></canvas>
-          </div>
-        </div>
-      </section>
-
-      <section class="product-preview" id="products">
-        <div class="container">
-          <div class="section-heading">
-            <p class="eyebrow">Crafted for every role</p>
-            <h2>Uniforms designed to lead with presence.</h2>
-          </div>
-
-          <div class="product-track" aria-label="Featured products">
-            <article class="product-card">
-              <div class="product-image product-one"></div>
-              <div class="product-copy">
-                <span class="product-tag">School</span>
+          <div class="film-track">
+            <article class="film-slide film-frame">
+              <canvas id="heroCanvas" role="img" aria-label="Noolen fabric, drawing back to reveal the polo shirt"></canvas>
+              <div class="slide-caption">
+                <p class="slide-index">01 <span>/ 05</span></p>
+                <p class="eyebrow">School</p>
                 <h3>Polo Shirt</h3>
               </div>
             </article>
-
-            <article class="product-card">
-              <div class="product-image product-two"></div>
-              <div class="product-copy">
-                <span class="product-tag">Corporate</span>
+            <article class="film-slide product-slide">
+              <img class="product-shot" src="assets/products/dress-shirt.webp" alt="Noolen white dress shirt" decoding="async" />
+              <div class="slide-caption">
+                <p class="slide-index">02 <span>/ 05</span></p>
+                <p class="eyebrow">Corporate</p>
                 <h3>Dress Shirt</h3>
               </div>
             </article>
-
-            <article class="product-card">
-              <div class="product-image product-three"></div>
-              <div class="product-copy">
-                <span class="product-tag">Corporate</span>
+            <article class="film-slide product-slide">
+              <img class="product-shot" src="assets/products/blazer.webp" alt="Noolen brown blazer" decoding="async" />
+              <div class="slide-caption">
+                <p class="slide-index">03 <span>/ 05</span></p>
+                <p class="eyebrow">Corporate</p>
                 <h3>Blazer</h3>
               </div>
             </article>
-
-            <article class="product-card">
-              <div class="product-image product-four"></div>
-              <div class="product-copy">
-                <span class="product-tag">School</span>
+            <article class="film-slide product-slide">
+              <img class="product-shot" src="assets/products/school-uniform.webp" alt="Noolen school uniform sets with skirt and trousers" decoding="async" />
+              <div class="slide-caption">
+                <p class="slide-index">04 <span>/ 05</span></p>
+                <p class="eyebrow">School</p>
                 <h3>School Uniform</h3>
               </div>
             </article>
-
-            <article class="product-card">
-              <div class="product-image product-five"></div>
-              <div class="product-copy">
-                <span class="product-tag">Industrial</span>
+            <article class="film-slide product-slide">
+              <img class="product-shot" src="assets/products/coverall.webp" alt="Noolen black and maroon industrial coverall" decoding="async" />
+              <div class="slide-caption">
+                <p class="slide-index">05 <span>/ 05</span></p>
+                <p class="eyebrow">Industrial</p>
                 <h3>Coverall</h3>
               </div>
             </article>

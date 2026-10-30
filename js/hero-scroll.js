@@ -6,22 +6,38 @@ const FRAME_COUNT = 233;
 const frameSet = window.matchMedia('(max-width: 720px)').matches ? 'mobile' : 'desktop';
 const frameSrc = (index) => `assets/frames/${frameSet}/frame_${String(index + 1).padStart(4, '0')}.webp`;
 
+const FRAME_ASPECT = 16 / 9;
+
 // The opening logo is wider than a phone screen, so it is shown whole (contain) and then eases
 // to full-bleed (cover) as the camera pushes into the letters. These frames bracket that push:
 // before ZOOM_END every frame still has a plain cream border, so the letterbox blends into the page.
 const ZOOM_START = 8;
 const ZOOM_END = 48;
 
-const coverAmount = (position) => {
-  const t = Math.min(Math.max((position - ZOOM_START) / (ZOOM_END - ZOOM_START), 0), 1);
+// At the end the film draws back to the polo, which must fit a phone screen before it becomes
+// the first product slide. From ZOOM_OUT_START the frame borders are plain cream again.
+const ZOOM_OUT_START = 213;
+const POLO_WIDTH = 0.272; // the polo's share of the last frame's width
+const POLO_MAX_SCREEN_WIDTH = 0.76;
+
+const smoothstep = (from, to, value) => {
+  const t = Math.min(Math.max((value - from) / (to - from), 0), 1);
   return t * t * (3 - 2 * t);
 };
 
-// Scale that maps the image onto the canvas, from contain (0) to cover (1).
-const fitScale = (canvas, image, cover) => {
-  const contain = Math.min(canvas.width / image.width, canvas.height / image.height);
-  const full = Math.max(canvas.width / image.width, canvas.height / image.height);
-  return contain + (full - contain) * cover;
+// Frame heights for a viewport, in the viewport's own units.
+const frameFits = (width, height) => {
+  const contain = Math.min(height, width / FRAME_ASPECT);
+  const cover = Math.max(height, width / FRAME_ASPECT);
+  const poloFits = (width * POLO_MAX_SCREEN_WIDTH) / POLO_WIDTH / FRAME_ASPECT;
+  return { contain, cover, end: Math.min(cover, Math.max(contain, poloFits)) };
+};
+
+// Height to draw the frame at for a scroll position: contain, then cover, then the polo's fit.
+const frameHeight = (position, width, height) => {
+  const fits = frameFits(width, height);
+  const zoomIn = fits.contain + (fits.cover - fits.contain) * smoothstep(ZOOM_START, ZOOM_END, position);
+  return zoomIn + (fits.end - zoomIn) * smoothstep(ZOOM_OUT_START, FRAME_COUNT - 1, position);
 };
 
 const VERTEX_SHADER = `
@@ -109,7 +125,7 @@ const createWebGLRenderer = (canvas) => {
     resize: () => {
       gl.viewport(0, 0, canvas.width, canvas.height);
     },
-    draw: (frames, base, next, blend, cover) => {
+    draw: (frames, base, next, blend, scale) => {
       const baseSlot = slots.find((slot) => slot.frame === base)
         || slots.find((slot) => slot.frame !== next)
         || slots[0];
@@ -119,7 +135,6 @@ const createWebGLRenderer = (canvas) => {
       if (blend > 0 && nextSlot.frame !== next) upload(nextSlot, next, frames[next]);
 
       const image = frames[base];
-      const scale = fitScale(canvas, image, cover);
       gl.uniform2f(uCover, canvas.width / (image.width * scale), canvas.height / (image.height * scale));
 
       gl.uniform1i(uBase, baseSlot.unit);
@@ -138,10 +153,9 @@ const create2DRenderer = (canvas) => {
     resize: () => {
       context.imageSmoothingQuality = 'high';
     },
-    draw: (frames, base, next, blend, cover) => {
+    draw: (frames, base, next, blend, scale) => {
       const image = frames[blend < 0.5 ? base : next];
       const { width, height } = canvas;
-      const scale = fitScale(canvas, image, cover);
       const drawWidth = image.width * scale;
       const drawHeight = image.height * scale;
 
@@ -242,7 +256,8 @@ const wireHeroScroll = () => {
       blend = 0;
     }
 
-    renderer.draw(frames, base, next, blend, coverAmount(position));
+    const scale = frameHeight(position, heroCanvas.width, heroCanvas.height) / frames[base].height;
+    renderer.draw(frames, base, next, blend, scale);
     drawnPosition = position;
   };
 
@@ -251,6 +266,9 @@ const wireHeroScroll = () => {
     heroCanvas.width = Math.round(heroCanvas.clientWidth * ratio);
     heroCanvas.height = Math.round(heroCanvas.clientHeight * ratio);
     renderer.resize();
+    // The product slides size their garments from the film's final frame.
+    const endHeight = frameFits(heroCanvas.clientWidth, heroCanvas.clientHeight).end;
+    scrollFilm.style.setProperty('--end-frame-height', `${endHeight}px`);
     render(true);
   };
 
@@ -271,17 +289,57 @@ const wireHeroScroll = () => {
   resize();
   window.addEventListener('resize', resize);
 
-  gsap.to(state, {
-    frame: FRAME_COUNT - 1,
-    ease: 'none',
-    onUpdate: render,
-    scrollTrigger: {
-      trigger: scrollFilm,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.5
-    }
+  // One scrubbed timeline: the film plays, the polo's caption fades in, then the track slides
+  // through the products. Durations are relative; the section's height sets the overall pace.
+  const track = scrollFilm.querySelector('.film-track');
+  const slides = track ? track.children.length : 1;
+  const firstCaption = scrollFilm.querySelector('.film-frame .slide-caption');
+  const FILM = 6;
+  const MOVE = 1.5;
+  const HOLD = 1;
+
+  const timeline = gsap.timeline({ defaults: { ease: 'none' } })
+    .to(state, { frame: FRAME_COUNT - 1, duration: FILM, onUpdate: render });
+
+  if (firstCaption) {
+    timeline.from(firstCaption, { opacity: 0, y: 24, duration: 0.6, ease: 'power2.out' });
+  }
+  timeline.addLabel('slide0').to({}, { duration: HOLD });
+
+  for (let index = 1; index < slides; index += 1) {
+    timeline
+      .to(track, { xPercent: -100 * index, duration: MOVE, ease: 'power1.inOut' })
+      .addLabel(`slide${index}`)
+      .to({}, { duration: HOLD });
+  }
+
+  // Between the end of the film and the last product, settle on whichever product is closest
+  // instead of stopping between two. Before and after that range, scrolling stays free.
+  const slideStops = Array.from({ length: slides }, (_, index) => timeline.labels[`slide${index}`] / timeline.duration());
+  const snapToSlide = (progress) => {
+    if (progress < slideStops[0] - 0.02 || progress > slideStops[slides - 1]) return progress;
+    return slideStops.reduce((closest, stop) => (Math.abs(stop - progress) < Math.abs(closest - progress) ? stop : closest));
+  };
+
+  const filmTrigger = ScrollTrigger.create({
+    trigger: scrollFilm,
+    start: 'top top',
+    end: 'bottom bottom',
+    animation: timeline,
+    scrub: 0.5,
+    // ScrollTrigger's own snap fights Lenis's smoothing, so with Lenis the snap goes through it.
+    snap: window.lenis ? undefined : { snapTo: snapToSlide, duration: { min: 0.3, max: 0.8 }, delay: 0.1, ease: 'power2.inOut' }
   });
+
+  if (window.lenis) {
+    ScrollTrigger.addEventListener('scrollEnd', () => {
+      if (!filmTrigger.isActive) return;
+      const target = filmTrigger.start + snapToSlide(filmTrigger.progress) * (filmTrigger.end - filmTrigger.start);
+      if (Math.abs(target - window.scrollY) > 2) {
+        window.lenis.scrollTo(target, { duration: 0.9, easing: (t) => 1 - Math.pow(1 - t, 3) });
+      }
+    });
+  }
 };
 
 if (document.readyState === 'loading') {
