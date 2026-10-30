@@ -1,53 +1,86 @@
-const heroVideo = document.getElementById('heroVideo');
+const heroCanvas = document.getElementById('heroCanvas');
 const scrollFilm = document.querySelector('.scroll-film');
 
+// Frames are generated from assets/video/noolen-video.mp4 by scripts/extract_hero_frames.py
+const FRAME_COUNT = 233;
+const frameSet = window.matchMedia('(max-width: 720px)').matches ? 'mobile' : 'desktop';
+const frameSrc = (index) => `assets/frames/${frameSet}/frame_${String(index + 1).padStart(4, '0')}.webp`;
+
 const wireHeroScroll = () => {
-  if (!heroVideo || !scrollFilm || !window.gsap || !window.ScrollTrigger) return;
+  if (!heroCanvas || !scrollFilm || !window.gsap || !window.ScrollTrigger) return;
 
-  const source = document.createElement('source');
-  source.src = 'assets/video/noolen-video.mp4';
-  source.type = 'video/mp4';
-  heroVideo.appendChild(source);
+  gsap.registerPlugin(ScrollTrigger);
 
-  heroVideo.addEventListener('loadedmetadata', () => {
-    gsap.registerPlugin(ScrollTrigger);
+  const context = heroCanvas.getContext('2d');
+  const frames = new Array(FRAME_COUNT);
+  const state = { frame: 0 };
+  let drawnFrame = -1;
 
-    let seekFrame = null;
-    let targetTime = 0;
-    const seekToTarget = () => {
-      if (seekFrame !== null || heroVideo.seeking) return;
+  // Draw the closest frame that has finished loading, so scrubbing never stalls on the network.
+  const nearestLoaded = (index) => {
+    for (let offset = 0; offset < FRAME_COUNT; offset += 1) {
+      if (frames[index - offset]) return index - offset;
+      if (frames[index + offset]) return index + offset;
+    }
+    return -1;
+  };
 
-      seekFrame = requestAnimationFrame(() => {
-        seekFrame = null;
-        if (!heroVideo.seeking && Math.abs(heroVideo.currentTime - targetTime) > 0.05) {
-          heroVideo.currentTime = targetTime;
-        }
-      });
-    };
+  const render = (force = false) => {
+    const index = nearestLoaded(Math.round(state.frame));
+    if (index < 0 || (index === drawnFrame && !force)) return;
 
-    heroVideo.addEventListener('seeked', seekToTarget);
+    const image = frames[index];
+    const { width, height } = heroCanvas;
+    const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+    const drawWidth = image.naturalWidth * scale;
+    const drawHeight = image.naturalHeight * scale;
 
-    ScrollTrigger.create({
+    context.drawImage(image, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight);
+    drawnFrame = index;
+  };
+
+  const resize = () => {
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    heroCanvas.width = Math.round(heroCanvas.clientWidth * ratio);
+    heroCanvas.height = Math.round(heroCanvas.clientHeight * ratio);
+    context.imageSmoothingQuality = 'high';
+    render(true);
+  };
+
+  const loadFrame = (index) => {
+    const image = new Image();
+    image.src = frameSrc(index);
+    return image.decode()
+      .then(() => {
+        frames[index] = image;
+        render();
+      })
+      .catch(() => {});
+  };
+
+  // First frame goes out alone so the hero paints immediately, then the rest stream in.
+  loadFrame(0).then(() => {
+    for (let index = 1; index < FRAME_COUNT; index += 1) loadFrame(index);
+  });
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  gsap.to(state, {
+    frame: FRAME_COUNT - 1,
+    ease: 'none',
+    onUpdate: render,
+    scrollTrigger: {
       trigger: scrollFilm,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: true,
-      onUpdate: (self) => {
-        targetTime = self.progress * heroVideo.duration;
-        seekToTarget();
-      }
-    });
-  }, { once: true });
+      scrub: 0.5
+    }
+  });
 };
 
-if (heroVideo) {
-  heroVideo.muted = true;
-  heroVideo.playsInline = true;
-  heroVideo.preload = 'metadata';
-}
-
-if (document.readyState === 'complete') {
-  wireHeroScroll();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', wireHeroScroll, { once: true });
 } else {
-  window.addEventListener('load', wireHeroScroll, { once: true });
+  wireHeroScroll();
 }
