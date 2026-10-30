@@ -5,7 +5,7 @@ const wireHeroScroll = () => {
   if (!heroVideo || !scrollFilm || !window.gsap || !window.ScrollTrigger) return;
 
   const source = document.createElement('source');
-  source.src = 'assets/video/Noolen-hero.mp4';
+  source.src = 'assets/video/noolen-video.mp4';
   source.type = 'video/mp4';
   heroVideo.appendChild(source);
 
