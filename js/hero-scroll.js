@@ -6,6 +6,24 @@ const FRAME_COUNT = 233;
 const frameSet = window.matchMedia('(max-width: 720px)').matches ? 'mobile' : 'desktop';
 const frameSrc = (index) => `assets/frames/${frameSet}/frame_${String(index + 1).padStart(4, '0')}.webp`;
 
+// The opening logo is wider than a phone screen, so it is shown whole (contain) and then eases
+// to full-bleed (cover) as the camera pushes into the letters. These frames bracket that push:
+// before ZOOM_END every frame still has a plain cream border, so the letterbox blends into the page.
+const ZOOM_START = 8;
+const ZOOM_END = 48;
+
+const coverAmount = (position) => {
+  const t = Math.min(Math.max((position - ZOOM_START) / (ZOOM_END - ZOOM_START), 0), 1);
+  return t * t * (3 - 2 * t);
+};
+
+// Scale that maps the image onto the canvas, from contain (0) to cover (1).
+const fitScale = (canvas, image, cover) => {
+  const contain = Math.min(canvas.width / image.width, canvas.height / image.height);
+  const full = Math.max(canvas.width / image.width, canvas.height / image.height);
+  return contain + (full - contain) * cover;
+};
+
 const VERTEX_SHADER = `
   attribute vec2 aPosition;
   varying vec2 vUv;
@@ -22,9 +40,13 @@ const FRAGMENT_SHADER = `
   uniform float uBlend;
   uniform vec2 uCover;
   varying vec2 vUv;
+  // Cream behind the opening frames; the letterbox fades to it so edge pixels are not smeared.
+  const vec4 FILL = vec4(250.0, 248.0, 216.0, 255.0) / 255.0;
   void main() {
     vec2 uv = (vUv - 0.5) * uCover + 0.5;
-    gl_FragColor = mix(texture2D(uBase, uv), texture2D(uNext, uv), uBlend);
+    vec4 color = mix(texture2D(uBase, uv), texture2D(uNext, uv), uBlend);
+    vec2 outside = max(-uv, uv - 1.0);
+    gl_FragColor = mix(color, FILL, smoothstep(0.0, 0.03, max(outside.x, outside.y)));
   }
 `;
 
@@ -87,7 +109,7 @@ const createWebGLRenderer = (canvas) => {
     resize: () => {
       gl.viewport(0, 0, canvas.width, canvas.height);
     },
-    draw: (frames, base, next, blend) => {
+    draw: (frames, base, next, blend, cover) => {
       const baseSlot = slots.find((slot) => slot.frame === base)
         || slots.find((slot) => slot.frame !== next)
         || slots[0];
@@ -97,13 +119,8 @@ const createWebGLRenderer = (canvas) => {
       if (blend > 0 && nextSlot.frame !== next) upload(nextSlot, next, frames[next]);
 
       const image = frames[base];
-      const canvasAspect = canvas.width / canvas.height;
-      const imageAspect = image.width / image.height;
-      if (canvasAspect > imageAspect) {
-        gl.uniform2f(uCover, 1, imageAspect / canvasAspect);
-      } else {
-        gl.uniform2f(uCover, canvasAspect / imageAspect, 1);
-      }
+      const scale = fitScale(canvas, image, cover);
+      gl.uniform2f(uCover, canvas.width / (image.width * scale), canvas.height / (image.height * scale));
 
       gl.uniform1i(uBase, baseSlot.unit);
       gl.uniform1i(uNext, nextSlot.unit);
@@ -121,13 +138,14 @@ const create2DRenderer = (canvas) => {
     resize: () => {
       context.imageSmoothingQuality = 'high';
     },
-    draw: (frames, base, next, blend) => {
+    draw: (frames, base, next, blend, cover) => {
       const image = frames[blend < 0.5 ? base : next];
       const { width, height } = canvas;
-      const scale = Math.max(width / image.width, height / image.height);
+      const scale = fitScale(canvas, image, cover);
       const drawWidth = image.width * scale;
       const drawHeight = image.height * scale;
 
+      context.clearRect(0, 0, width, height);
       context.drawImage(image, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight);
     }
   };
@@ -224,7 +242,7 @@ const wireHeroScroll = () => {
       blend = 0;
     }
 
-    renderer.draw(frames, base, next, blend);
+    renderer.draw(frames, base, next, blend, coverAmount(position));
     drawnPosition = position;
   };
 
