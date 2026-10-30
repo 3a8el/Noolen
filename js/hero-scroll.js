@@ -26,16 +26,24 @@ const wireHeroScroll = () => {
     gsap.set(copyOne, { opacity: 0 });
     gsap.set(copyTwo, { opacity: 0 });
 
+    let seekFrame = null;
+    let targetTime = 0;
+
     ScrollTrigger.create({
       trigger: scrollFilm,
       start: 'top top',
       end: 'bottom bottom',
       scrub: true,
       onUpdate: (self) => {
-        const t = self.progress * heroVideo.duration;
-        if (Math.abs(heroVideo.currentTime - t) > 0.05) {
-          heroVideo.currentTime = t;
-        }
+        targetTime = self.progress * heroVideo.duration;
+        if (seekFrame !== null) return;
+
+        seekFrame = requestAnimationFrame(() => {
+          seekFrame = null;
+          if (Math.abs(heroVideo.currentTime - targetTime) > 0.05) {
+            heroVideo.currentTime = targetTime;
+          }
+        });
       }
     });
 
@@ -57,7 +65,7 @@ const wireHeroScroll = () => {
 if (heroVideo) {
   heroVideo.muted = true;
   heroVideo.playsInline = true;
-  heroVideo.preload = 'auto';
+  heroVideo.preload = 'metadata';
 }
 
 if (document.readyState === 'complete') {

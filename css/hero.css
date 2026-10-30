@@ -20,7 +20,7 @@
 
 .scroll-film {
   position: relative;
-  height: 350vh;
+  height: 250vh;
   background: var(--cream);
 }
 
@@ -46,8 +46,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.9) contrast(1.04);
-  opacity: 0.95;
+  filter: none;
+  opacity: 1;
 }
 
 .film-fallback {
@@ -71,7 +71,7 @@ body.video-fallback #heroVideo {
 .film-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(252, 246, 220, 0.12), rgba(252, 246, 220, 0.2));
+  background: transparent;
 }
 
 .film-copy {
@@ -176,7 +176,7 @@ body.video-fallback #heroVideo {
 
 @media (max-width: 720px) {
   .scroll-film {
-    height: 280vh;
+    height: 210vh;
   }
 
   .film-copy {
